@@ -1,0 +1,4 @@
+gomoku:
+  setting:
+    defaultTurnTime: 60
+    defaultRating: 1200

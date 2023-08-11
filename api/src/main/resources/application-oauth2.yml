@@ -1,0 +1,17 @@
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${properties.oauth2.google.client-id}
+            client-secret: ${properties.oauth2.google.client-secret}
+            scope:
+              - profile
+              - email
+            redirect-uri: ${properties.oauth2.google.redirect-uri}
+      cookie-name: ${properties.oauth2.cookie-name}
+      redirectUriSuccess: ${properties.oauth2.redirectUriSuccess}
+      redirectUriSignUp: ${properties.oauth2.redirectUriSignUp}
+      redirectUriFailure: ${properties.oauth2.redirectUriFailure}
+      cookie-expire-seconds: ${properties.oauth2.cookie-expire-seconds}

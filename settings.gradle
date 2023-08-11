@@ -1,0 +1,8 @@
+rootProject.name = 'boardgame-back'
+
+include 'domain'
+include 'api'
+include 'core'
+include 'common'
+include 'gomoku_ws'
+include 'file'

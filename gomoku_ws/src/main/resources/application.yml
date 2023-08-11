@@ -1,0 +1,18 @@
+spring:
+  profiles:
+    active: dev
+    group:
+      prod:
+        - server
+        - data
+        - jwt
+        - cookie
+        - secret
+        - gomoku
+      dev:
+        - server
+        - data
+        - jwt
+        - cookie
+        - secret
+        - gomoku
