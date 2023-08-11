@@ -1,0 +1,38 @@
+plugins {
+    id 'java'
+    id "com.google.cloud.tools.jib" version "3.3.2"
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
+    implementation 'com.amazonaws:aws-java-sdk-s3:1.12.470'
+}
+
+bootJar {
+    enabled = true
+}
+
+jar {
+    enabled = false
+}
+
+
+jib {
+    from {
+        image = 'azul/zulu-openjdk-alpine:17.0.7-17.42.19-arm64'
+        platforms {
+            platform {
+                architecture = 'arm64'
+                os = 'linux'
+            }
+        }
+    }
+    to {
+        image = 'registry.boardgaming.win/lkw1211/api'
+    }
+    container {
+        mainClass = "com.boardgaming.ApiApplication"
+        jvmFlags = ['-Duser.timezone=Asia/Seoul', '-Dspring.profiles.active=prod', '-XX:+UseContainerSupport']
+        volumes = ["/tmp"]
+    }
+}

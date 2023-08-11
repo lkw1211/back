@@ -1,0 +1,6 @@
+r2:
+  endPoint: ${properties.r2.endPoint}
+  accessKey: ${properties.r2.accessKey}
+  secretKey: ${properties.r2.secretKey}
+  bucket: ${properties.r2.bucket}
+  publicUrl: ${properties.r2.publicUrl}

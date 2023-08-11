@@ -1,0 +1,22 @@
+spring:
+  profiles:
+    active: dev
+    group:
+      prod:
+        - data
+        - server
+        - jwt
+        - cookie
+        - mail
+        - secret
+        - file
+        - oauth2
+      dev:
+        - data
+        - server
+        - jwt
+        - cookie
+        - mail
+        - secret
+        - file
+        - oauth2
