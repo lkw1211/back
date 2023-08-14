@@ -13,8 +13,8 @@ public record GomokuRoomListResponse(
     ) {
         return new GomokuRoomListResponse(
             entity.getId(),
-            GomokuUserResponse.of(entity.getBlackPlayerId(), entity.getBlackPlayerName(), entity.getBlackPlayerEmail(), entity.getBlackPlayerImageFileUrl()),
-            GomokuUserResponse.of(entity.getWhitePlayerId(), entity.getWhitePlayerName(), entity.getWhitePlayerEmail(), entity.getWhitePlayerImageFileUrl()),
+            new GomokuUserResponse(entity.getBlackPlayerId(), entity.getBlackPlayerName(), entity.getBlackPlayerEmail(), entity.getBlackPlayerImageFileUrl()),
+            new GomokuUserResponse(entity.getWhitePlayerId(), entity.getWhitePlayerName(), entity.getWhitePlayerEmail(), entity.getWhitePlayerImageFileUrl()),
             entity.getPieceCnt()
         );
     }

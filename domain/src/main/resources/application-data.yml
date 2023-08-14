@@ -1,4 +1,8 @@
 spring:
+  config:
+    activate:
+      on-profile: prod,dev
+
   datasource:
     url: jdbc:mysql://${properties.data.mysql.host}:${properties.data.mysql.port}/${properties.data.mysql.database}?rewriteBatchedStatements=true
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -8,11 +12,13 @@ spring:
       max-lifetime: 600000
   jpa:
     open-in-view: false
-    show-sql: false
+    show-sql: true
     hibernate:
       ddl-auto: update
     properties:
       hibernate:
+        jdbc:
+          batch_size: 1000
         default_batch_fetch_size: 1000
         format_sql: true
 

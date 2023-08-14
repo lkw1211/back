@@ -12,37 +12,29 @@ public record GomokuUserGameHistorySimpleResponse(
     Long beforeRating,
     Long afterRating
 ) {
-    public static GomokuUserGameHistorySimpleResponse of(
-        final GomokuGameHistory history,
-        final String userId
+    public static GomokuUserGameHistorySimpleResponse blackPlayerOf(
+        final GomokuGameHistory history
     ) {
-        String opponent;
-        GomokuColor userColor;
-        GomokuUserResult result;
-        Long beforeRating;
-        Long afterRating;
-
-        if (history.getBlackPlayerId().equals(userId)) {
-            opponent = history.getWhitePlayerName();
-            userColor = GomokuColor.BLACK;
-            result = history.getResult().getBlackResult();
-            beforeRating = history.getBlackPlayerBeforeRating();
-            afterRating = history.getBlackPlayerAfterRating();
-        } else {
-            opponent = history.getBlackPlayerName();
-            userColor = GomokuColor.WHITE;
-            result = history.getResult().getWhiteResult();
-            beforeRating = history.getWhitePlayerBeforeRating();
-            afterRating = history.getWhitePlayerAfterRating();
-        }
-
         return new GomokuUserGameHistorySimpleResponse(
             history.getId(),
-            opponent,
-            userColor,
-            result,
-            beforeRating,
-            afterRating
+            history.getWhitePlayerName(),
+            GomokuColor.BLACK,
+            history.getResult().getBlackResult(),
+            history.getBlackPlayerBeforeRating(),
+            history.getBlackPlayerAfterRating()
+        );
+    }
+
+    public static GomokuUserGameHistorySimpleResponse whitePlayerOf(
+        final GomokuGameHistory history
+    ) {
+        return new GomokuUserGameHistorySimpleResponse(
+            history.getId(),
+            history.getBlackPlayerName(),
+            GomokuColor.WHITE,
+            history.getResult().getWhiteResult(),
+            history.getWhitePlayerBeforeRating(),
+            history.getWhitePlayerAfterRating()
         );
     }
 }

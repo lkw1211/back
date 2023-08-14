@@ -17,6 +17,10 @@ jar {
     enabled = false
 }
 
+tasks.named('jibDockerBuild') {
+    dependsOn test
+}
+
 jib {
     from {
         image = 'azul/zulu-openjdk-alpine:17.0.7-17.42.19-arm64'

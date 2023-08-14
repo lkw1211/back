@@ -94,7 +94,7 @@ public class UserService {
         User user = userRepository.findById(userId)
             .orElseThrow(NotFoundUserException::new);
 
-        user.updateProfile(request);
+        user.updateName(request.getName());
     }
 
     private static void checkPasswordConfirm(final ChangePasswordRequest request) {

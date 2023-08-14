@@ -6,7 +6,6 @@ import com.boardgaming.api.application.user.command.UserService;
 import com.boardgaming.api.application.user.query.UserQuery;
 import com.boardgaming.common.exception.auth.InvalidOAuth2TempKeyException;
 import com.boardgaming.common.exception.user.InvalidPasswordConfirmException;
-import com.boardgaming.common.exception.user.NotFoundUserException;
 import com.boardgaming.core.config.auth.application.TokenService;
 import com.boardgaming.core.util.CookieUtil;
 import com.boardgaming.domain.auth.domain.OAuth2Attributes;
@@ -20,10 +19,10 @@ import com.boardgaming.domain.auth.dto.response.SignUpResponse;
 import com.boardgaming.domain.auth.dto.response.TokenResponse;
 import com.boardgaming.domain.user.domain.User;
 import com.boardgaming.domain.user.domain.repository.UserRepository;
+import com.boardgaming.domain.user.domain.repository.UserRepositoryCustom;
 import com.boardgaming.domain.user.dto.response.UserResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -35,12 +34,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
-@Slf4j
 @Service
 public class SignService {
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final TokenService tokenService;
     private final UserRepository userRepository;
+    private final UserRepositoryCustom userRepositoryCustom;
     private final String domain;
     private final String sameSite;
     private final VerificationQuery verificationQuery;
@@ -54,6 +53,7 @@ public class SignService {
         final AuthenticationManagerBuilder authenticationManagerBuilder,
         final TokenService tokenService,
         final UserRepository userRepository,
+        final UserRepositoryCustom userRepositoryCustom,
         @Value("${custom.cookieDomain}") final String domain,
         @Value("${custom.sameSite}") final String sameSite,
         final VerificationQuery verificationQuery,
@@ -66,6 +66,7 @@ public class SignService {
         this.authenticationManagerBuilder = authenticationManagerBuilder;
         this.tokenService = tokenService;
         this.userRepository = userRepository;
+        this.userRepositoryCustom = userRepositoryCustom;
         this.domain = domain;
         this.sameSite = sameSite;
         this.verificationQuery = verificationQuery;
@@ -163,9 +164,7 @@ public class SignService {
     }
 
     private UserResponse getUserInfo(final LoginRequest request) {
-        return UserResponse.of(
-            userRepository.findByEmail(request.getEmail())
-                .orElseThrow(NotFoundUserException::new));
+        return userRepositoryCustom.getUserInfo(request.getEmail());
     }
 
     @Transactional

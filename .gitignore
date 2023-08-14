@@ -39,7 +39,6 @@ docker/
 /gomoku_ws/src/main/resources/application-secret.yml
 /api/src/main/resources/application-secret.yml
 /api/src/main/resources/static/image/user/*
-/file/src/main/resources/application-secret.yml
-/file/src/main/resources/static/*
 
 .github
+/domain/src/main/generated/

@@ -8,16 +8,12 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
-@EnableRedisRepositories(basePackages = {"com.boardgaming.domain"})
-@EnableJpaRepositories(basePackages = {"com.boardgaming.domain"})
-@EntityScan(basePackages = {"com.boardgaming.domain"})
+@EnableRedisRepositories(basePackages = {"com.boardgaming.*"})
+@EnableJpaRepositories(basePackages = {"com.boardgaming.*"})
+@EntityScan(basePackages = {"com.boardgaming.*"})
 @EnableJpaAuditing
 @EnableScheduling
-@SpringBootApplication(scanBasePackages = {
-	"com.boardgaming.domain.config",
-	"com.boardgaming.core.config",
-	"com.boardgaming.api",
-})
+@SpringBootApplication(scanBasePackages = "com.boardgaming.*")
 public class ApiApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(ApiApplication.class, args);

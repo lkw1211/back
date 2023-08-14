@@ -1,7 +1,7 @@
 package com.boardgaming.api.application.email;
 
+import com.boardgaming.domain.email.domain.EmailLog;
 import com.boardgaming.domain.email.domain.repository.EmailLogRepository;
-import com.boardgaming.domain.email.dto.request.EmailRequest;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Value;
@@ -41,21 +41,9 @@ public class MailService {
     public String sendVerificationCode(final String recipient) {
         String verificationCode = generateVerificationCode();
 
-        sendEmail(createVerificationEmailRequest(recipient, verificationCode));
+        sendEmail(recipient, "boardgame verification code", getVerificationHtml(verificationCode));
 
         return verificationCode;
-    }
-
-    private EmailRequest createVerificationEmailRequest(
-            final String recipient,
-            final String verificationCode
-    ) {
-        return EmailRequest.builder()
-                .sender(sender)
-                .recipient(recipient)
-                .subject("boardgame verification code")
-                .text(getVerificationHtml(verificationCode))
-                .build();
     }
 
     private String getVerificationHtml(final String verificationCode) {
@@ -120,16 +108,25 @@ public class MailService {
                 "</table>";
     }
 
-    private void sendEmail(final EmailRequest request) {
-        emailLogRepository.save(request.toEntity());
+    private void sendEmail(
+        final String recipient,
+        final String subject,
+        final String text
+    ) {
+        emailLogRepository.save(EmailLog.builder()
+                .recipient(recipient)
+                .sender(sender)
+                .subject(subject)
+                .text(text)
+            .build());
         MimeMessage message = mailSender.createMimeMessage();
 
         try {
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
             helper.setFrom(sender);
-            helper.setSubject(request.getSubject());
-            helper.setTo(request.getRecipient());
-            helper.setText(request.getText(), true);
+            helper.setSubject(subject);
+            helper.setTo(recipient);
+            helper.setText(text, true);
         } catch (MessagingException e) {
             e.printStackTrace();
         }

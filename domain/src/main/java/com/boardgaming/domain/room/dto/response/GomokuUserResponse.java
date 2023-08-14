@@ -6,12 +6,4 @@ public record GomokuUserResponse(
     String email,
     String imageFileUrl
 ) {
-    public static GomokuUserResponse of(
-        final String id,
-        final String name,
-        final String email,
-        final String imageFileUrl
-    ) {
-        return new GomokuUserResponse(id, name, email, imageFileUrl);
-    }
 }

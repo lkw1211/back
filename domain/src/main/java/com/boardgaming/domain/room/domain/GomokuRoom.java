@@ -11,14 +11,13 @@ import org.springframework.data.redis.core.RedisHash;
 import org.springframework.data.redis.core.index.Indexed;
 
 import java.time.LocalDateTime;
-import java.util.Objects;
+import java.util.List;
 
 @Getter
 @RedisHash("gomoku-room")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class GomokuRoom extends BaseTimeRedisEntity {
     @Id
-    @Indexed
     private Long id;
     private GomokuRule rule;
     private GomokuColor gameTurn;
@@ -35,9 +34,8 @@ public class GomokuRoom extends BaseTimeRedisEntity {
     private String whitePlayerEmail;
     private String whitePlayerImageFileUrl;
     private Long gomokuGameHistoryId;
-    @Indexed
-    private GomokuRoomStatus status;
     private Long pieceCnt;
+    private GomokuBoard board;
 
     @Builder
     public GomokuRoom(
@@ -48,7 +46,6 @@ public class GomokuRoom extends BaseTimeRedisEntity {
         final User blackPlayer,
         final User whitePlayer,
         final Long gomokuGameHistoryId,
-        final GomokuRoomStatus status,
         final GomokuColor gameTurn
     ) {
         super();
@@ -66,32 +63,35 @@ public class GomokuRoom extends BaseTimeRedisEntity {
         this.whitePlayerEmail = whitePlayer.getEmail();
         this.whitePlayerImageFileUrl = whitePlayer.getImageFileUrl();
         this.gomokuGameHistoryId = gomokuGameHistoryId;
-        this.status = status;
         this.gameTurn = gameTurn;
         this.pieceCnt = 0L;
+        this.board = GomokuBoard.initialize(List.of());
+    }
+
+    public void doMove(final int move) {
+        this.board.doMove(move);
+    }
+
+    public GomokuColor getFiveInRowColor() {
+        return this.board.getFiveInRowColor();
+    }
+
+    public static String getRedisHashName() {
+        return "gomoku-room";
     }
 
     public boolean includePlayer(final String userId) {
         return this.blackPlayerId.equals(userId) || this.whitePlayerId.equals(userId);
     }
 
-    public boolean isTurnOf(final User user) {
-        return (this.gameTurn.equals(GomokuColor.BLACK) && this.blackPlayerId.equals(user.getId()))
-            || (this.gameTurn.equals(GomokuColor.WHITE) && this.whitePlayerId.equals(user.getId()));
+    public boolean isTurnOf(final String userId) {
+        return (this.gameTurn.equals(GomokuColor.BLACK) && this.blackPlayerId.equals(userId))
+            || (this.gameTurn.equals(GomokuColor.WHITE) && this.whitePlayerId.equals(userId));
     }
 
-    public void updateTurnState(final boolean isEnd) {
-        if (isEnd) {
-            this.status = GomokuRoomStatus.END;
-            this.turnTimeEnd = System.currentTimeMillis();
-        } else {
-            changeTurn();
-        }
+    public void updateTurnState() {
+        changeTurn();
         updateModifiedDate();
-    }
-
-    public static boolean isStart(final GomokuRoom room) {
-        return room.status.equals(GomokuRoomStatus.START);
     }
 
     private void changeTurn() {
@@ -100,16 +100,15 @@ public class GomokuRoom extends BaseTimeRedisEntity {
         this.pieceCnt += 1;
     }
 
-    public boolean needEndUpdate() {
-        return Objects.nonNull(this.gomokuGameHistoryId) && this.turnTimeEnd <= System.currentTimeMillis() && this.status.equals(GomokuRoomStatus.START);
+    public boolean isEnd() {
+        return this.turnTimeEnd <= System.currentTimeMillis();
     }
 
-    public void gameEnd() {
-        this.status = GomokuRoomStatus.END;
-        updateModifiedDate();
+    public boolean isStart() {
+        return this.turnTimeEnd > System.currentTimeMillis();
     }
 
-    public boolean notModifiedMoreThanThreeMinutes() {
-        return this.getModifiedDate().plusMinutes(3).isBefore(LocalDateTime.now());
+    public boolean needDelete() {
+        return isEnd() && this.getModifiedDate().plusMinutes(3).isBefore(LocalDateTime.now());
     }
 }

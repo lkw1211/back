@@ -30,6 +30,6 @@ public class GomokuGameQueue extends BaseTimeRedisEntity {
         final GomokuGameQueue target,
         final GomokuGameQueue other
     ) {
-        return Math.abs(target.rating - other.rating) <= Math.abs(target.rating) * 0.2;
+        return Math.abs(target.rating - other.rating) <= Math.min(Math.abs(target.rating), Math.abs(other.rating)) * 0.2;
     }
 }

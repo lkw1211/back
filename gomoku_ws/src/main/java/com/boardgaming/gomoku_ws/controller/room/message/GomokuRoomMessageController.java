@@ -28,7 +28,7 @@ public class GomokuRoomMessageController {
         @MessageLoginUser final String userId,
         @DestinationVariable final Long roomId
     ) {
-        gomokuRoomService.endCheck(userId, roomId);
+        gomokuRoomService.endRoom(userId, roomId);
     }
 }
 

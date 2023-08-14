@@ -11,9 +11,7 @@ import java.util.Map;
 public class OAuth2Attributes {
     private Map<String, Object> attributes;
     private String nameAttributesKey;
-    private String name;
     private String email;
-    private String phoneNumber;
     private String profileImageUrl;
     private OAuth2Provider provider;
 
@@ -21,17 +19,13 @@ public class OAuth2Attributes {
     public OAuth2Attributes(
         final Map<String, Object> attributes,
         final String nameAttributesKey,
-        final String name,
         final String email,
-        final String phoneNumber,
         final String profileImageUrl,
         final OAuth2Provider provider
     ) {
         this.attributes = attributes;
         this.nameAttributesKey = nameAttributesKey;
-        this.name = name;
         this.email = email;
-        this.phoneNumber = phoneNumber;
         this.profileImageUrl = profileImageUrl;
         this.provider = provider;
     }
@@ -53,7 +47,6 @@ public class OAuth2Attributes {
         final OAuth2Provider provider
     ) {
         return OAuth2Attributes.builder()
-            .name(String.valueOf(attributes.get("name")))
             .email(String.valueOf(attributes.get("email")))
             .profileImageUrl(String.valueOf(attributes.get("picture")))
             .attributes(attributes)

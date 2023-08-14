@@ -22,29 +22,15 @@ public class GomokuRoomScheduler {
     @Transactional
     @Scheduled(cron = "0 * * * * *")
     public void updateGomokuRoomStatus() {
-        updateStartStatusGomokuRoom();
-        deleteEndStatusGomokuRoom();
-    }
-
-    private void updateStartStatusGomokuRoom() {
-        List<GomokuRoom> startGomokuRoomList = gomokuRoomQuery.getStartStatusRoomList();
-
-        startGomokuRoomList.stream()
-            .filter(GomokuRoom::notModifiedMoreThanThreeMinutes)
-            .forEach(gomokuRoomService::endCheck);
-    }
-
-    private void deleteEndStatusGomokuRoom() {
-        List<GomokuRoom> endGomokuRoomList = gomokuRoomQuery.getEndStatusRoomList();
-
-        gomokuRoomService.deleteGomokuRooms(endGomokuRoomList.stream()
-            .filter(GomokuRoom::notModifiedMoreThanThreeMinutes)
-            .toList());
+        List<GomokuRoom> roomList = gomokuRoomQuery.getAllRoomList();
+        roomList.forEach(gomokuRoomService::endRoom);
+        gomokuRoomService.deleteGomokuRooms(roomList);
     }
 
     @Scheduled(cron = "5/10 * * * * *")
     public void updateWaitingRoomList() {
-        List<GomokuRoomListResponse> newWaitingRoomlist = gomokuRoomQuery.getAllStartRoomList();
+        List<GomokuRoomListResponse> newWaitingRoomlist = gomokuRoomQuery.getAllRoomResponseListReverseOrder();
+
         if (!waitingRoomList.equals(newWaitingRoomlist)) {
             waitingRoomList.clear();
             waitingRoomList.addAll(newWaitingRoomlist);

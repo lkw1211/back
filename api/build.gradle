@@ -16,6 +16,9 @@ jar {
     enabled = false
 }
 
+tasks.named('jibDockerBuild') {
+    dependsOn test
+}
 
 jib {
     from {

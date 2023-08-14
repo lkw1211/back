@@ -1,6 +1,6 @@
 package com.boardgaming.api.application.auth.query;
 
-import com.boardgaming.domain.user.domain.repository.VerifiedEmailRepository;
+import com.boardgaming.domain.auth.domain.repository.VerifiedEmailRepository;
 import com.boardgaming.common.exception.user.NotFoundEmailVerificationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

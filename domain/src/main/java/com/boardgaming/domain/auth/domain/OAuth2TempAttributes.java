@@ -15,12 +15,9 @@ import java.util.UUID;
 public class OAuth2TempAttributes {
     @Id
     private String key;
-
     private Map<String, Object> attributes;
     private String nameAttributesKey;
-    private String name;
     private String email;
-    private String phoneNumber;
     private String profileImageUrl;
     private OAuth2Provider provider;
 
@@ -28,18 +25,14 @@ public class OAuth2TempAttributes {
         final String key,
         final Map<String, Object> attributes,
         final String nameAttributesKey,
-        final String name,
         final String email,
-        final String phoneNumber,
         final String profileImageUrl,
         final OAuth2Provider provider
     ) {
         this.key = key;
         this.attributes = attributes;
         this.nameAttributesKey = nameAttributesKey;
-        this.name = name;
         this.email = email;
-        this.phoneNumber = phoneNumber;
         this.profileImageUrl = profileImageUrl;
         this.provider = provider;
     }
@@ -51,9 +44,7 @@ public class OAuth2TempAttributes {
             UUID.randomUUID().toString(),
             oAuth2Attributes.getAttributes(),
             oAuth2Attributes.getNameAttributesKey(),
-            oAuth2Attributes.getName(),
             oAuth2Attributes.getEmail(),
-            oAuth2Attributes.getPhoneNumber(),
             oAuth2Attributes.getProfileImageUrl(),
             oAuth2Attributes.getProvider()
         );
@@ -63,9 +54,7 @@ public class OAuth2TempAttributes {
         return new OAuth2Attributes(
             attributes,
             nameAttributesKey,
-            name,
             email,
-            phoneNumber,
             profileImageUrl,
             provider
         );

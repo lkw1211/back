@@ -42,7 +42,7 @@ public class GomokuGameQueueService {
                 .rating(rating)
                 .build());
 
-        return GameQueueSubResponse.of("/sub/game-queue/" + userId);
+        return new GameQueueSubResponse("/sub/game-queue/" + userId);
     }
 
     @Transactional

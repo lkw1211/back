@@ -3,6 +3,7 @@ package com.boardgaming.gomoku_ws.application.userHistory.query;
 import com.boardgaming.common.exception.user.NotFoundUserException;
 import com.boardgaming.domain.user.domain.User;
 import com.boardgaming.domain.userHistory.domain.GomokuUserHistory;
+import com.boardgaming.domain.userHistory.domain.repository.GomokuUserHistoryCustomRepository;
 import com.boardgaming.domain.userHistory.domain.repository.GomokuUserHistoryRepository;
 import com.boardgaming.domain.userHistory.dto.response.GomokuUserHistoryResponse;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,13 +17,16 @@ import java.util.Comparator;
 @Transactional(readOnly = true)
 public class GomokuUserHistoryQuery {
     private final GomokuUserHistoryRepository gomokuUserHistoryRepository;
+    private final GomokuUserHistoryCustomRepository gomokuUserHistoryCustomRepository;
     private final Long defaultRating;
 
     public GomokuUserHistoryQuery(
         final GomokuUserHistoryRepository gomokuUserHistoryRepository,
+        final GomokuUserHistoryCustomRepository gomokuUserHistoryCustomRepository,
         @Value("${gomoku.setting.defaultRating}") final Long defaultRating
     ) {
         this.gomokuUserHistoryRepository = gomokuUserHistoryRepository;
+        this.gomokuUserHistoryCustomRepository = gomokuUserHistoryCustomRepository;
         this.defaultRating = defaultRating;
     }
 
@@ -52,9 +56,6 @@ public class GomokuUserHistoryQuery {
     }
 
     public GomokuUserHistoryResponse getGomokuUserHistory(final String userId) {
-        return GomokuUserHistoryResponse.of(gomokuUserHistoryRepository.findByUserId(userId)
-            .orElse(GomokuUserHistory.builder()
-                .rating(defaultRating)
-                .build()));
+        return gomokuUserHistoryCustomRepository.findByUserId(userId);
     }
 }

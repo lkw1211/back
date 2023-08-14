@@ -4,12 +4,5 @@ import lombok.Getter;
 
 @Getter
 public class GomokuMoveRequest {
-    private Long move;
-
-    @Override
-    public String toString() {
-        return "GomokuMoveRequest{" +
-            "move=" + move +
-            '}';
-    }
+    private Integer move;
 }

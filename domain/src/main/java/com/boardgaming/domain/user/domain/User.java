@@ -3,7 +3,6 @@ package com.boardgaming.domain.user.domain;
 import com.boardgaming.domain.auth.domain.OAuth2Provider;
 import com.boardgaming.domain.common.BaseTimeEntity;
 
-import com.boardgaming.domain.user.dto.request.ChangeProfileRequest;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -63,17 +62,10 @@ public class User extends BaseTimeEntity {
 		this.password = password;
 	}
 
-	public void updateProfile(
-		final ChangeProfileRequest request
+	public void updateName(
+		final String name
 	) {
-		this.name = request.getName();
-	}
-
-	public User update(final String name, final String imageFileUrl) {
 		this.name = name;
-		this.imageFileUrl = imageFileUrl;
-
-		return this;
 	}
 
 	public void updateImageFileUrl(

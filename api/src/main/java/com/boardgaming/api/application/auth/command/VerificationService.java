@@ -1,10 +1,10 @@
 package com.boardgaming.api.application.auth.command;
 
 import com.boardgaming.api.application.email.MailService;
-import com.boardgaming.domain.user.domain.EmailVerification;
-import com.boardgaming.domain.user.domain.VerifiedEmail;
-import com.boardgaming.domain.user.domain.repository.EmailVerificationRepository;
-import com.boardgaming.domain.user.domain.repository.VerifiedEmailRepository;
+import com.boardgaming.domain.auth.domain.EmailVerification;
+import com.boardgaming.domain.auth.domain.VerifiedEmail;
+import com.boardgaming.domain.auth.domain.repository.EmailVerificationRepository;
+import com.boardgaming.domain.auth.domain.repository.VerifiedEmailRepository;
 import com.boardgaming.domain.user.dto.request.CheckEmailVerificationCodeRequest;
 import com.boardgaming.domain.user.dto.request.SendEmailVerificationCodeRequest;
 import com.boardgaming.domain.user.dto.response.ValidCheckResponse;
@@ -37,7 +37,7 @@ public class VerificationService {
             return new ValidCheckResponse(true);
         }
 
-        return ValidCheckResponse.of(false);
+        return new ValidCheckResponse(false);
     }
 
     public void sendEmailVerificationCode(final SendEmailVerificationCodeRequest request) {

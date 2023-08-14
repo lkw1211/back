@@ -1,8 +1,8 @@
 package com.boardgaming.gomoku_ws.controller.room.rest;
 
 import com.boardgaming.core.config.annotation.LoginUser;
-import com.boardgaming.domain.room.dto.response.GomokuEnterRoomResponse;
 import com.boardgaming.domain.room.dto.response.GomokuRoomListResponse;
+import com.boardgaming.domain.room.dto.response.GomokuRoomResponse;
 import com.boardgaming.gomoku_ws.application.room.command.GomokuRoomService;
 import com.boardgaming.gomoku_ws.application.room.query.GomokuRoomQuery;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +19,7 @@ public class GomokuRoomController {
     private final GomokuRoomQuery gomokuRoomQuery;
 
     @PostMapping("/{roomId}/player")
-    public ResponseEntity<GomokuEnterRoomResponse> enterRoomPlayer(
+    public ResponseEntity<GomokuRoomResponse> enterRoomPlayer(
         @LoginUser final String userId,
         @PathVariable final Long roomId
     ) {
@@ -27,7 +27,7 @@ public class GomokuRoomController {
     }
 
     @PostMapping("/{roomId}/watcher")
-    public ResponseEntity<GomokuEnterRoomResponse> enterRoomWatcher(
+    public ResponseEntity<GomokuRoomResponse> enterRoomWatcher(
         @LoginUser final String userId,
         @PathVariable final Long roomId
     ) {
@@ -45,6 +45,6 @@ public class GomokuRoomController {
     public ResponseEntity<List<GomokuRoomListResponse>> getAllRoomList(
         @LoginUser final String userId
     ) {
-        return ResponseEntity.ok(gomokuRoomQuery.getAllStartRoomList());
+        return ResponseEntity.ok(gomokuRoomQuery.getAllRoomResponseListReverseOrder());
     }
 }
